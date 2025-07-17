@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>local todo list</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="top-bar">
+        <h1>todo list</h1>
+    </div>
+    <div class="taskList">
+        <div class="taskHead">
+            <h2 style="margin-right: 2em;">task list</h2>
+            <button id="addTaskbtn" onclick="addTask()">add task</button>
+            <button onclick="clearComplete()">clear completed</button>
+            <button onclick="clearAll()">clear all</button>
+        </div>
+        <div id="tasks"></div>
+    <div id="taskPopup">
+        <input type="text" placeholder="task name" id="taskInput">
+        <button id="confirm" onclick="confirmTask()">confirm</button>
+        <button class="closePopup" onclick="closePopup()">x</button>
+    </div>
+    <div id="popupDialogue">
+        <p id="popupDialogueText"></p>
+        <button class="closePopup" onclick="closePopup()">x</button>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", loadTasksFromLocalStorage);
+    </script>
+</body>
+</html>

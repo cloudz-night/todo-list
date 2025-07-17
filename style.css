@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+/* colors */
+:root {
+    --primary: #b197dd;
+    --secondary: #493a61;
+    --accent: #6bb4a8;
+    --background: #1A1224;
+    --dark-bg: #11091B;
+    --text: #e8e0f5;
+    --yellow: #95813B;
+    --purple: #73377A;
+    --green: #4a7c6d;
+}
+
+body {
+    font-family: 'JetBrains Mono', monospace;
+    margin: 0px;
+    background-color: var(--background);
+}
+
+h1, h2, h3, h4, h5, h6, p, li, td, th {
+    color: var(--text);
+}
+
+.top-bar {
+    background-color: var(--dark-bg);
+    text-align: center;
+    width: 80%;
+    padding: 0.2em;
+    border: solid 0.3em var(--secondary);
+    border-radius: 15px;
+    margin: 2em auto;
+}
+
+.taskList {
+    margin: 2em auto;
+    width: 80%;
+}
+
+button, input {
+    background-color: var(--primary);
+    color: var(--dark-bg);
+    border: none;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 0.5em 1em;
+    border-radius: 5px;
+    margin: 0.5em;
+    cursor: pointer;
+}
+
+input:focus {
+    outline: none;
+}
+
+.taskHead {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1em;
+    background-color: var(--dark-bg);
+    border-radius: 15px;
+    border: solid 0.2em var(--secondary);
+    height: 2vw;
+}
+
+#tasks {
+    width: 80%;
+    margin: 2em auto;
+    margin-top: 1em;
+    background-color: var(--dark-bg);
+    border: solid 0.15em var(--secondary);
+    border-radius: 15px;
+    display: none;
+}
+
+.task {
+    display: flex;
+    margin-left: 1em;
+    margin-right: 1em;
+    justify-content: space-between;
+    background-color: var(--background);
+    margin: 0.5em;
+    border-radius: 10px;
+    padding-left: 1em;
+    padding-right: 0.5em;
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#taskPopup, #editTaskPopup, #popupDialogue {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--dark-bg);
+    padding: 2em;
+    border-radius: 15px;
+    border: solid 0.2em var(--secondary);
+    z-index: 1000;
+    display: none;
+}
