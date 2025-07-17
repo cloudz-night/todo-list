@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>local todo list</title>
+    <title>todo-list</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="img/icon.ico">
 </head>
 <body>
     <div class="top-bar">
@@ -16,6 +17,7 @@
             <button id="addTaskbtn" onclick="addTask()">add task</button>
             <button onclick="clearComplete()">clear completed</button>
             <button onclick="clearAll()">clear all</button>
+            <button onclick="openAuth()">account</button>
         </div>
         <div id="tasks"></div>
     <div id="taskPopup">
@@ -27,9 +29,47 @@
         <p id="popupDialogueText"></p>
         <button class="closePopup" onclick="closePopup()">x</button>
     </div>
-    <script src="script.js"></script>
+
+    <div id="editPopup">
+        <input type="text" placeholder="edit task" id="editInput">
+        <button id="confirmEdit" onclick="confirmEdit()">confirm</button>
+        <button class="closePopup" onclick="closePopup()">x</button>
+    </div>
+
+    <div id="authSection">
+        <input type="email" id="email" placeholder="email">
+        <input type="password" id="password" placeholder="password">
+        <button onclick="signUp()">Sign Up</button>
+        <button onclick="signIn()">Sign In</button>
+        <button onclick="signInWithGoogle()" class="google-btn">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="18" height="18">
+            Sign in with Google
+        </button>
+        <button onclick="signOut()">Sign Out</button>
+        <span id="authStatus"></span>
+        <button class="closePopup" onclick="closePopup()">x</button>
+    </div>
+    <!-- Firebase App (core) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <!-- Firebase Auth -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <!-- Firebase Firestore -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", loadTasksFromLocalStorage);
-    </script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCS9I66I5MSskyIkRxFesSPHD-HGdKSwW0",
+    authDomain: "todo-list-28fdc.firebaseapp.com",
+    projectId: "todo-list-28fdc",
+    storageBucket: "todo-list-28fdc.appspot.com",
+    messagingSenderId: "792289416988",
+    appId: "1:792289416988:web:8893a4fd159ba1af440cd9",
+    measurementId: "G-RBX2N5Z3KX"
+  };
+
+  firebase.initializeApp(firebaseConfig)
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+</script>
+    <script src="script.js"></script>
 </body>
 </html>
