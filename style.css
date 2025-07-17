@@ -19,7 +19,7 @@ body {
     background-color: var(--background);
 }
 
-h1, h2, h3, h4, h5, h6, p, li, td, th {
+h1, h2, h3, h4, h5, h6, p, li, td, th, span {
     color: var(--text);
 }
 
@@ -92,7 +92,7 @@ input:focus {
     justify-content: center;
 }
 
-#taskPopup, #editTaskPopup, #popupDialogue {
+#taskPopup, #editPopup, #popupDialogue, #authSection {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -103,4 +103,27 @@ input:focus {
     border: solid 0.2em var(--secondary);
     z-index: 1000;
     display: none;
+}
+
+#authSection {
+    display: none;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 10px;
+    padding: 20px;
+}
+
+.google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: white !important;
+    color: #757575 !important;
+    border: 1px solid #ddd !important;
+    grid-column: span 2;
+}
+
+.google-btn:hover {
+    background-color: #f5f5f5 !important;
 }
