@@ -2,6 +2,7 @@
 
 /* colors */
 :root {
+    /* rose-pine */
     --primary: #b197dd;
     --secondary: #493a61;
     --accent: #6bb4a8;
@@ -11,7 +12,17 @@
     --yellow: #95813B;
     --purple: #73377A;
     --green: #4a7c6d;
+
+    /* theme 1 */
+    --oneprimary: #474cca;
+    --onesecondary: #bfb2b0;
+    --oneaccent: #a6a691;
+    --onebackground: #fcfcfd;
+    --onedark-bg: #D9D9DA;
+    --onetext: #070709;
 }
+
+
 
 body {
     font-family: 'JetBrains Mono', monospace;
@@ -19,23 +30,77 @@ body {
     background-color: var(--background);
 }
 
+
 h1, h2, h3, h4, h5, h6, p, li, td, th, span {
     color: var(--text);
 }
-
 .top-bar {
     background-color: var(--dark-bg);
     text-align: center;
     width: 80%;
+    height: 4em;
     padding: 0.2em;
+    padding-left: 2em;
+    padding-right: 2em;
     border: solid 0.3em var(--secondary);
     border-radius: 15px;
     margin: 2em auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .taskList {
     margin: 2em auto;
     width: 80%;
+}
+
+.menu {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(6px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    padding-left: 2em;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.menu.menu--visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: opacity 0.4s cubic-bezier(0.77,0,0.175,1);
+}
+
+.menu li {
+    list-style: none;
+}
+
+.menu a {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 2em;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: 10px;
+    transition: all 0.2s ease-in-out;
+    display: inline-block;
+}
+
+.menu a:hover {
+    font-family: "JetBrains Mono", monospace;
+    letter-spacing: 15px;
+    margin-left: 2em;
+    cursor: pointer;
+}
+
+* {
+    transition: all 0.2s ease-in-out;
 }
 
 button, input {
@@ -47,6 +112,15 @@ button, input {
     border-radius: 5px;
     margin: 0.5em;
     cursor: pointer;
+    transform: scale(1);
+}
+
+button:hover {
+    transform: scale(1.05)
+}
+
+button:active {
+    transform: scale(0.95);
 }
 
 input:focus {
@@ -86,6 +160,19 @@ input:focus {
     padding-right: 0.5em;
 }
 
+.task.new-task {
+    transform: translateX(-20px);
+    opacity: 0;
+    animation: slideIn 0.3s ease-out forwards;
+}
+
+@keyframes slideIn {
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
 .buttons {
     display: flex;
     align-items: center;
@@ -93,16 +180,31 @@ input:focus {
 }
 
 #taskPopup, #editPopup, #popupDialogue, #authSection {
+    display: none;
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(0.95);
+    opacity: 0;
     background-color: var(--dark-bg);
     padding: 2em;
     border-radius: 15px;
     border: solid 0.2em var(--secondary);
-    z-index: 1000;
-    display: none;
+    z-index: 1001;
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#taskPopup[style*="display: block"],
+#editPopup[style*="display: block"],
+#popupDialogue[style*="display: block"],
+#authSection[style*="display: grid"] {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 #authSection {
@@ -126,4 +228,212 @@ input:focus {
 
 .google-btn:hover {
     background-color: #f5f5f5 !important;
+}
+
+#topSignOut {
+    display: none;
+}
+
+#accountContainer {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+#userPhoto {
+    width: 3em;
+    height: 3em;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+#userEmail, #userName {
+    color: var(--text);
+    padding: 6px 12px;
+    background-color: var(--dark-bg);
+    border-radius: 5px;
+    font-size: 1em;
+    margin-right: 8px;
+}
+
+.mobile-header {
+    display: none;
+    width: 100%;
+    background-color: var(--dark-bg);
+    border-bottom: solid 0.2em var(--secondary);
+    padding: 0.5em;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    transform: translateY(-100%);
+    transition: transform 0.3s ease-in-out;
+}
+
+.mobile-header[style*="display: flex"] {
+    transform: translateY(0);
+}
+
+.mobile-header h1 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.mobile-header button {
+    margin: 0;
+}
+
+.mobile-bar {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--dark-bg);
+    padding: 1em;
+    border-top: solid 0.2em var(--secondary);
+    justify-content: space-around;
+    align-items: center;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-in-out;
+}
+
+.mobile-bar[style*="display: flex"] {
+    transform: translateY(0);
+}
+
+@media screen and (max-width: 790px) {
+    .top-bar {
+        width: 91.9%;
+        margin: 0;
+        border-radius: 0;
+        border-left: 0;
+        border-right: 0;
+        border-top: 0;
+    }
+
+    .taskList {
+        width: 100%;
+        margin-top: 1em;
+        margin-bottom: 5em; /* Space for mobile bar */
+    }
+
+    .taskHead {
+        display: none;
+    }
+
+    .taskHead h2 {
+        margin: 0.5em 0;
+    }
+
+    .taskHead button {
+        display: none; /* Hide buttons in header on mobile */
+    }
+
+    .mobile-bar {
+        display: flex; /* Show mobile bar on small screens */
+    }
+
+    #tasks {
+        width: 95%;
+    }
+
+    .task {
+        flex-direction: row;
+    }
+
+    .buttons {
+        margin-top: 0.5em;
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    #taskPopup, #editPopup, #popupDialogue, #authSection {
+        width: 90%;
+        padding: 1em;
+    }
+
+    #authSection {
+        width: 90%;
+        grid-template-columns: 1fr;
+    }
+
+    .google-btn {
+        grid-column: span 1;
+    }
+
+    input {
+        width: 100%;
+        box-sizing: border-box;
+        margin: 0.25em 0;
+    }
+
+    /* Menu adjustments */
+    .menu {
+        padding-left: 1em;
+    }
+
+    .menu a {
+        font-size: 1.5em;
+        letter-spacing: 5px;
+    }
+
+    .menu a:hover {
+        letter-spacing: 8px;
+        margin-left: 1em;
+    }
+
+    /* Account container adjustments */
+    #accountContainer {
+        margin-left: auto;
+    }
+
+    #userEmail, #userName {
+        font-size: 0.8em;
+        padding: 4px 8px;
+    }
+
+    #userPhoto {
+        width: 2em;
+        height: 2em;
+    }
+}
+
+@media screen and (max-width: 730px) {
+    #account-mobile {
+        margin-right: 2em;
+    }
+
+    .top-bar {
+        display: none;
+    }
+
+    .mobile-header {
+        display: flex;
+        padding-right: 2em;
+    }
+
+    .taskList {
+        margin-top: 7em;
+        width: 95%;
+    }
+
+    .taskHead {
+        display: none;
+    }
+
+    #tasks {
+        width: 95%;
+    }
+
+    .task {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .buttons {
+        flex-direction: row;
+    }
 }
