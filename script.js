@@ -49,10 +49,45 @@ auth.onAuthStateChanged((user) => {
     // User is signed in
     document.getElementById("authStatus").textContent = "Signed in!";
     loadTasksFromFirestore();
+
+    // Update the account display
+    const userPhoto = document.getElementById("userPhoto");
+    const userEmail = document.getElementById("userEmail");
+    const userName = document.getElementById("userName");
+    const accountBtn = document.getElementById("account");
+
+    if (user.photoURL) {
+      // User has a Google profile photo
+      userPhoto.src = user.photoURL;
+      userPhoto.style.display = "block";
+      userName.textContent = user.displayName;
+      userName.style.display = "block";
+      userEmail.style.display = "none";
+      accountBtn.style.display = "none";
+    } else {
+      // User signed in with email
+      userPhoto.style.display = "none";
+      userEmail.textContent = user.email;
+      userEmail.style.display = "block";
+      accountBtn.style.display = "none";
+    }
   } else {
     // User is signed out
     document.getElementById("tasks").innerHTML = "";
     document.getElementById("tasks").style.display = "none";
+
+    // Reset account display
+    const userPhoto = document.getElementById("userPhoto");
+    const userEmail = document.getElementById("userEmail");
+    const userName = document.getElementById("userName");
+    const accountBtn = document.getElementById("account");
+    const accountBtnMobile = document.getElementById("account-mobile");
+
+    userPhoto.style.display = "none";
+    userEmail.style.display = "none";
+    userName.style.display = "none";
+    accountBtn.style.display = "block";
+    if (accountBtnMobile) accountBtnMobile.style.display = "block";
   }
 });
 
@@ -61,9 +96,42 @@ function saveTaskToFirestore(text, completed) {
   if (!user) return;
   db.collection("users").doc(user.uid).collection("tasks").add({
     text: text,
-    completed: completed || false
+    completed: completed || false,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
   }).then(() => {
-    loadTasksFromFirestore();
+    // Get the task list ready
+    const taskList = document.getElementById("tasks");
+    taskList.style.display = "block";
+
+    // Create new task element with animation
+    const task = document.createElement("div");
+    const taskP = document.createElement("p");
+    const buttonDiv = document.createElement("div");
+    const editBtn = document.createElement("button");
+    const deleteBtn = document.createElement("button");
+
+    task.classList.add("task", "new-task"); // Add animation class for new tasks
+    taskP.textContent = text;
+    buttonDiv.className = "buttons";
+    editBtn.textContent = "edit";
+    deleteBtn.textContent = "delete";
+
+    buttonDiv.appendChild(editBtn);
+    buttonDiv.appendChild(deleteBtn);
+    task.appendChild(taskP);
+    task.appendChild(buttonDiv);
+
+    // Add to DOM at the top of the list
+    if (taskList.firstChild) {
+      taskList.insertBefore(task, taskList.firstChild);
+    } else {
+      taskList.appendChild(task);
+    }
+
+    // Refresh the list after animation completes
+    setTimeout(() => {
+      loadTasksFromFirestore();
+    }, 300); // Same duration as the animation
   });
 }
 
@@ -107,6 +175,8 @@ function addTask() {
     const taskInput = document.getElementById("taskInput");
     const taskPopup = document.getElementById("taskPopup");
     taskPopup.style.display = "block";
+    // Force a reflow to ensure the animation triggers
+    void taskPopup.offsetWidth;
     taskInput.value = "";
     taskInput.focus();
 }
@@ -121,10 +191,10 @@ function confirmTask() {
         const popupDialogue = document.getElementById("popupDialogue")
         let popupDialogueText = document.getElementById("popupDialogueText")
         popupDialogueText.textContent = "enter task name"
-        popupDialogue.style.display = "flex"
-        popupDialogue.style.justifyContent = "center"
-        popupDialogue.style.alignItems = "center"
+        popupDialogue.style.display = "block"
         popupDialogueText.style.marginRight = "2em"
+        // Force a reflow to ensure the animation triggers
+        void popupDialogue.offsetWidth;
         return;
     }
 
@@ -255,7 +325,7 @@ function loadTasksFromFirestore() {
         let buttonDiv = document.createElement("div");
         let editBtn = document.createElement("button");
         let deleteBtn = document.createElement("button");
-        task.classList.add("task");
+        task.classList.add("task"); // No animation on load
         taskP.textContent = text;
         if (completed) {
           taskP.style.textDecoration = "line-through";
@@ -340,4 +410,55 @@ function updateTaskText(docId, newText) {
   }).then(() => {
     loadTasksFromFirestore();
   });
+}
+
+function menu() {
+    let menu = document.getElementById("menuPanel")
+    menu.classList.toggle("menu--visible");
+}
+
+// Track theme state
+let isDarkMode = localStorage.getItem('isDarkMode') === 'true';
+
+// Load saved theme on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.textContent = isDarkMode ? 'light theme' : 'dark theme';
+    applyTheme(isDarkMode);
+});
+
+function darkTheme() {
+    isDarkMode = !isDarkMode;
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.textContent = isDarkMode ? 'light theme' : 'dark theme';
+    applyTheme(isDarkMode);
+    // Save theme preference
+    localStorage.setItem('isDarkMode', isDarkMode);
+}
+
+function closePopup() {
+    document.querySelectorAll('#taskPopup, #editPopup, #popupDialogue, #authSection').forEach(popup => {
+        popup.style.display = 'none';
+    });
+}
+
+function applyTheme(isDark) {
+    const root = document.documentElement;
+    if (isDark) {
+        // Switch to dark theme (rose-pine)
+        root.style.setProperty('--primary', '#b197dd');
+        root.style.setProperty('--secondary', '#493a61');
+        root.style.setProperty('--accent', '#6bb4a8');
+        root.style.setProperty('--background', '#1A1224');
+        root.style.setProperty('--dark-bg', '#11091B');
+        root.style.setProperty('--text', '#e8e0f5');
+    } else {
+        // Switch to light theme (theme 1)
+        root.style.setProperty('--primary', '#474cca');
+        root.style.setProperty('--secondary', '#bfb2b0');
+        root.style.setProperty('--accent', '#a6a691');
+        root.style.setProperty('--background', '#fcfcfd');
+        root.style.setProperty('--dark-bg', '#D9D9DA');
+        root.style.setProperty('--text', '#070709');
+    }
 }
