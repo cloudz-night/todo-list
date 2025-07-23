@@ -8,8 +8,36 @@
     <link rel="icon" type="image/x-icon" href="img/icon.ico">
 </head>
 <body>
+    <div id="menuPanel" class="menu">
+        <button style="font-size: 70px; background-color: transparent; color: var(--text);" onclick="menu()" id="menu-close">&times;</button>
+        <ul>
+            <li><a onclick="darkTheme(), menu()" id="themeToggle">dark theme</a></li>
+        </ul>
+    </div>
     <div class="top-bar">
+        <div class="top-left" style="display: flex; align-items: center; margin-left: -3em;">
+            <button id="menu" style="font-size: 2em; background-color: transparent; color: var(--text);" onclick="menu()">☰</button>
+            <h1>todo list</h1>
+        </div>
+        <div class="buttons-right">
+            <button onclick="signOut()" id="topSignOut">sign out</button>
+            <div onclick="openAuth()" id="accountContainer">
+                <span id="userName" style="display: none;"></span>
+                <img id="userPhoto" style="display: none;" alt="Profile">
+                <span id="userEmail" style="display: none;"></span>
+                <button id="account">account</button>
+            </div>
+        </div>
+    </div>
+    <div class="mobile-header">
+        <button id="menu-mobile" style="font-size: 2em; background-color: transparent; color: var(--text);" onclick="menu()">☰</button>
         <h1>todo list</h1>
+        <button onclick="openAuth()" id="account-mobile">account</button>
+    </div>
+    <div class="mobile-bar">
+        <button id="addTaskbtn-mobile" onclick="addTask()">add task</button>
+        <button onclick="clearComplete()">clear completed</button>
+        <button onclick="clearAll()">clear all</button>
     </div>
     <div class="taskList">
         <div class="taskHead">
@@ -17,7 +45,6 @@
             <button id="addTaskbtn" onclick="addTask()">add task</button>
             <button onclick="clearComplete()">clear completed</button>
             <button onclick="clearAll()">clear all</button>
-            <button onclick="openAuth()">account</button>
         </div>
         <div id="tasks"></div>
     <div id="taskPopup">
@@ -39,13 +66,13 @@
     <div id="authSection">
         <input type="email" id="email" placeholder="email">
         <input type="password" id="password" placeholder="password">
-        <button onclick="signUp()">Sign Up</button>
-        <button onclick="signIn()">Sign In</button>
+        <button onclick="signUp()">sign up</button>
+        <button onclick="signIn()">sign in</button>
         <button onclick="signInWithGoogle()" class="google-btn">
             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="18" height="18">
             Sign in with Google
         </button>
-        <button onclick="signOut()">Sign Out</button>
+        <button onclick="signOut()">sign out</button>
         <span id="authStatus"></span>
         <button class="closePopup" onclick="closePopup()">x</button>
     </div>
